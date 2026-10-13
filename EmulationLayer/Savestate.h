@@ -2,6 +2,7 @@
 #define SAVESTATE_H
 
 #include "Bus.h"
+#include <stddef.h>
 
 #define NES_SAVESTATE_SLOT_COUNT 10
 
@@ -39,6 +40,11 @@ int NES_loadSavestate(struct NES_Console* console, struct NES_Savestate* savesta
 // Save and load savestatess using the built-in slots
 int NES_loadSavestateSlot(struct NES_Console* console, int slot);
 int NES_saveSavestateSlot(struct NES_Console* console, int slot);
+
+// Write the path of a slot's file with the given extension into path, e.g. Savestates/<checksum>/1.savestate for
+// "savestate". Files that go with a slot, like its thumbnail, sit next to it this way. Returns 1 if there's no game
+// running or the slot doesn't exist
+int NES_getSavestateSlotPath(struct NES_Console* console, int slot, const char* extension, char* path, size_t length);
 
 // Free the memory allocated for the savestate
 void NES_freeSavestate(struct NES_Savestate* savestate);

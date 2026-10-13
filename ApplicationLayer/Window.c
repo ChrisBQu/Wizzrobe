@@ -4,6 +4,7 @@
 #include "Screen.h"
 #include "Overlay.h"
 #include "Screenshot.h"
+#include "SavestateMenu.h"
 #include "../EmulationLayer/Bus.h"
 #include "../EmulationLayer/Cartridge.h"
 #include "../EmulationLayer/Savestate.h"
@@ -296,6 +297,8 @@ void handleMenuEvents(SDL_Event e) {
 							printf("Error: Failed to load ROM.\n");
 							break;
 						}
+						// The savestate menu shows the old game's slots, so close it
+						savestateMenuClose(getGlobalApplicationState()->savestateMenu, getGlobalApplicationState()->overlay);
 						NES_resetConsoleState(getGlobalApplicationState()->console);
 						NES_clearHistory();
 						struct Cartridge* game_cart = NES_createCartridgeFromBuffer(rom_data);
@@ -314,7 +317,11 @@ void handleMenuEvents(SDL_Event e) {
 					case MENU_ID_SAVE_SAVESLOT_6: case MENU_ID_SAVE_SAVESLOT_7: case MENU_ID_SAVE_SAVESLOT_8: case MENU_ID_SAVE_SAVESLOT_9: case MENU_ID_SAVE_SAVESLOT_10: {
 						int slot = LOWORD(e.syswm.msg->msg.win.wParam) - MENU_ID_SAVE_SAVESLOT_1;
 						char message[MAX_OVERLAY_TEXT_LENGTH];
-						if (NES_saveSavestateSlot(getGlobalApplicationState()->console, slot) == 0) { SDL_snprintf(message, sizeof(message), "Saved to slot %d", slot + 1); }
+						if (NES_saveSavestateSlot(getGlobalApplicationState()->console, slot) == 0) {
+							// The savestate is fine without its thumbnail, so a failure here doesn't count as a failed save
+							saveSavestateThumbnail(getGlobalApplicationState()->console, getGlobalApplicationState()->screen, slot);
+							SDL_snprintf(message, sizeof(message), "Saved to slot %d", slot + 1);
+						}
 						else { SDL_snprintf(message, sizeof(message), "Failed to save to slot %d", slot + 1); }
 						overlayShowMessage(getGlobalApplicationState()->overlay, message);
 						break;

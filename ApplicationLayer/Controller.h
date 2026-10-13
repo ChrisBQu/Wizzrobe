@@ -18,6 +18,7 @@ typedef enum {
     // Emulator hotkeys. These aren't sent to the NES, and are only used on player 1's controller
     BUTTON_REWIND = NUMBER_OF_NES_BUTTONS,
     BUTTON_TURBO,
+    BUTTON_SAVESTATE_MENU,
     NUMBER_OF_BUTTONS } CONTROLLER_BUTTON;
 
 typedef struct Controller Controller;

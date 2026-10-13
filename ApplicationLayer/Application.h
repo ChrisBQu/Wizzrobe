@@ -6,6 +6,7 @@
 #include "Screen.h"
 #include "Overlay.h"
 #include "Rewind.h"
+#include "SavestateMenu.h"
 #include "Config.h"
 
 struct ApplicationState {
@@ -13,6 +14,7 @@ struct ApplicationState {
     struct Screen *screen;
     struct Overlay *overlay;
     struct Rewind *rewind;
+    struct SavestateMenu *savestateMenu;
     struct Cartridge *cartridge;
     struct Controller* controller_p1;
     struct Controller* controller_p2;

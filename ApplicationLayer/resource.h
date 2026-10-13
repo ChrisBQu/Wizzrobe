@@ -61,6 +61,8 @@
 #define IDC_SOUND_ENABLED               1053
 #define IDC_SOUND_VOLUME                1054
 #define IDC_SOUND_VOLUME_VALUE          1055
+#define IDC_HOTKEY_SAVESTATE_MENU       1056
+#define IDC_STATIC_HOTKEY_SAVESTATE_MENU 1057
 
 // Next default values for new objects
 //
@@ -68,7 +70,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        106
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1056
+#define _APS_NEXT_CONTROL_VALUE         1058
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

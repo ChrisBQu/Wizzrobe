@@ -21,9 +21,9 @@ static const int bindingTextIDs[2][NUMBER_OF_NES_BUTTONS] = {
 	  IDC_CONTROLLER_P2_UP, IDC_CONTROLLER_P2_DOWN, IDC_CONTROLLER_P2_LEFT, IDC_CONTROLLER_P2_RIGHT }
 };
 
-// The text box for each hotkey, in CONTROLLER_BUTTON order (Rewind, Turbo). Hotkeys are kept on player 1's controller
+// The text box for each hotkey, in CONTROLLER_BUTTON order (Rewind, Turbo, Savestate menu). Hotkeys are kept on player 1's controller
 #define NUMBER_OF_HOTKEYS (NUMBER_OF_BUTTONS - NUMBER_OF_NES_BUTTONS)
-static const int hotkeyTextIDs[NUMBER_OF_HOTKEYS] = { IDC_HOTKEY_REWIND, IDC_HOTKEY_TURBO };
+static const int hotkeyTextIDs[NUMBER_OF_HOTKEYS] = { IDC_HOTKEY_REWIND, IDC_HOTKEY_TURBO, IDC_HOTKEY_SAVESTATE_MENU };
 
 // Helper function: fill every text box in the controller dialog with what's bound to its button
 static void showBindings(HWND dlg) {

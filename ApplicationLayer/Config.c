@@ -48,6 +48,7 @@ static const struct ConfigOption options[] = {
     BINDING_OPTION("p2_Right", 1, BUTTON_RIGHT, "<Unmapped>"),
     BINDING_OPTION("hotkey_Rewind", 0, BUTTON_REWIND, "Backspace"),
     BINDING_OPTION("hotkey_Turbo", 0, BUTTON_TURBO, "Tab"),
+    BINDING_OPTION("hotkey_SavestateMenu", 0, BUTTON_SAVESTATE_MENU, "F1"),
 };
 
 #define MAX_LINE_LENGTH 1024

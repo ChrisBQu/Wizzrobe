@@ -117,6 +117,8 @@ int overlayAddText(struct Overlay* overlay, const char* text, float x, float y, 
     struct OverlayElement* element = addElement(overlay, OVERLAY_ELEMENT_TEXT, x, y, duration_ms);
     if (element == NULL) { return OVERLAY_INVALID_ID; }
     SDL_strlcpy(element->text, text, MAX_OVERLAY_TEXT_LENGTH);
+    element->textHeight = OVERLAY_TEXT_HEIGHT;
+    element->textBackground = true;
     return element->id;
 }
 
@@ -183,6 +185,13 @@ void overlaySetOpacity(struct Overlay* overlay, int id, float opacity) {
     if (element != NULL) { element->opacity = opacity; }
 }
 
+void overlaySetTextStyle(struct Overlay* overlay, int id, float height, bool background) {
+    struct OverlayElement* element = findElement(overlay, id);
+    if (element == NULL || element->type != OVERLAY_ELEMENT_TEXT || height <= 0.0f) { return; }
+    element->textHeight = height;
+    element->textBackground = background;
+}
+
 int overlayAddBox(struct Overlay* overlay, float x, float y, float width, float height, float r, float g, float b, float a, Uint32 duration_ms) {
     if (overlay == NULL) { return OVERLAY_INVALID_ID; }
     struct OverlayElement* element = addElement(overlay, OVERLAY_ELEMENT_BOX, x, y, duration_ms);
@@ -244,7 +253,7 @@ void overlayShowThumbnail(struct Overlay* overlay, const uint8_t* rgb, int pixel
 // Returns false if there's nothing to draw
 static bool updateTextTexture(struct Overlay* overlay, struct OverlayElement* element, float scale) {
     if (overlay->font == NULL) { return false; }
-    int fontSize = (int)(OVERLAY_TEXT_HEIGHT * scale * overlay->fontPointsPerPixel + 0.5f);
+    int fontSize = (int)(element->textHeight * scale * overlay->fontPointsPerPixel + 0.5f);
     if (fontSize < 1) { fontSize = 1; }
     if (element->texture != 0 && element->textureFontSize == fontSize) { return true; }
 
@@ -347,7 +356,7 @@ static void drawElement(struct Overlay* overlay, struct Screen* screen, struct O
     float h = element->height * scale;
 
     // Text gets a dark box behind it so it can be read over any background
-    if (element->type == OVERLAY_ELEMENT_TEXT) {
+    if (element->type == OVERLAY_ELEMENT_TEXT && element->textBackground) {
         float padding = OVERLAY_TEXT_PADDING * scale;
         float boxAlpha = alpha * OVERLAY_TEXT_BACKGROUND_ALPHA / 255.0f;
         drawRect(overlay, screen, overlay->whiteTexture, x - padding, y - padding, w + padding * 2, h + padding * 2, 0.0f, 0.0f, 0.0f, boxAlpha);

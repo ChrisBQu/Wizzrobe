@@ -8,7 +8,7 @@
 // Declared here so the functions below can take a pointer to it without including its header
 struct Screen;
 
-#define MAX_OVERLAY_ELEMENTS 32
+#define MAX_OVERLAY_ELEMENTS 64
 #define MAX_OVERLAY_TEXT_LENGTH 128
 
 // Returned when an element couldn't be added. Removing it does nothing
@@ -55,6 +55,9 @@ struct OverlayElement {
     // so the texture is rebuilt whenever the font size needed for the window changes
     char text[MAX_OVERLAY_TEXT_LENGTH];
     int textureFontSize;
+    // Line height in NES pixels, and whether a dark box is drawn behind the text
+    float textHeight;
+    bool textBackground;
 
     // Image elements keep their pixels (ARGB8888) until the texture is built, then let them go
     Uint32* pixels;
@@ -111,6 +114,10 @@ int overlayAddImageARGB(struct Overlay* overlay, const Uint32* argb, int pixelWi
 // and how visible it is (1 fully, 0 not at all)
 void overlaySetBorder(struct Overlay* overlay, int id, float size);
 void overlaySetOpacity(struct Overlay* overlay, int id, float opacity);
+
+// Change a text element's line height (in NES pixels) and whether it has a dark box behind it. Text starts at the
+// standard height, with a box
+void overlaySetTextStyle(struct Overlay* overlay, int id, float height, bool background);
 
 // Add a solid colored rectangle, with its top-left corner at (x, y) and size in NES pixels. Color parts go from 0 to 1
 int overlayAddBox(struct Overlay* overlay, float x, float y, float width, float height, float r, float g, float b, float a, Uint32 duration_ms);

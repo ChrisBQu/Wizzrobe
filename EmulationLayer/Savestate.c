@@ -26,6 +26,12 @@ static void getSlotPaths(const struct Cartridge* c, int slot, char* folder, char
     snprintf(filename, NES_SAVESTATE_FILENAME_LENGTH, "%s/%d.savestate", folder, slot + 1);
 }
 
+int NES_getSavestateSlotPath(struct NES_Console* console, int slot, const char* extension, char* path, size_t length) {
+    if (slot < 0 || slot >= NES_SAVESTATE_SLOT_COUNT || console->ConnectedCartridge == NULL) { return 1; }
+    snprintf(path, length, NES_SAVESTATE_FOLDER "/%" PRIu32 "/%d.%s", console->ConnectedCartridge->checksum, slot + 1, extension);
+    return 0;
+}
+
 int NES_saveSavestateSlot(struct NES_Console* console, int slot) {
     if (slot < 0 || slot >= NES_SAVESTATE_SLOT_COUNT) {
         printf("Invalid savestateslot number\n");

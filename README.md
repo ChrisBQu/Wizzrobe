@@ -7,7 +7,7 @@ This is still very much a work in progress. Current features are:
 - APU
 - Mappers 0 through 5
 - Controller with keyboad/gamepad binding
-- Savestate functionality
+- Savestate functionality with visual interface
 - Battery save functionality
-- Fast forward, and rewind functionality
+- Fast forward, and rewind functionality with visual interface
 - CRT filter (courtesy of Timothy Lottes)

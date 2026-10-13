@@ -186,6 +186,7 @@ void controller_init_default_bindings(Controller* controller) {
 	controller_bind_key_to_button(controller, SDLK_RIGHT, BUTTON_RIGHT);
 	controller_bind_key_to_button(controller, SDLK_BACKSPACE, BUTTON_REWIND);
 	controller_bind_key_to_button(controller, SDLK_TAB, BUTTON_TURBO);
+	controller_bind_key_to_button(controller, SDLK_F1, BUTTON_SAVESTATE_MENU);
 }
 
 // Call once per frame for each controller to handle button presses and update the state accordingly

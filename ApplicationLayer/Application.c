@@ -87,6 +87,13 @@ struct ApplicationState* initApplicationState() {
         return NULL;
     }
 
+    // Initialize the savestate menu
+    appState->savestateMenu = createSavestateMenu();
+    if (appState->savestateMenu == NULL) {
+        destroyApplicationState(appState);
+        return NULL;
+    }
+
     // Initialize the SDL audio device
     appState->sdlAudioDevice = 0;
     if (SDL_InitSubSystem(SDL_INIT_AUDIO) == 0) {
@@ -149,6 +156,7 @@ void destroyApplicationState(struct ApplicationState *appState) {
     if (appState == NULL) { return; }
     NES_writeBatterySave(appState->console->ConnectedCartridge);
     destroyRewind(appState->rewind);
+    destroySavestateMenu(appState->savestateMenu);
     destroyScreen(appState->screen);
     destroyOverlay(appState->overlay);
     if (appState->sdlAudioDevice != 0) { SDL_CloseAudioDevice(appState->sdlAudioDevice); }
@@ -206,10 +214,16 @@ void tickMain(struct ApplicationState *appState) {
     // Catch a turbo request
     bool turbo = controller_get_pressed(appState->controller_p1, BUTTON_TURBO);
 
+    // The savestate menu pauses the game and shows the savestate slots, to pick one to load. It can't open while rewinding
+    if (appState->startup_ready && !appState->rewind->active) {
+        savestateMenuUpdate(appState->savestateMenu, appState->overlay, appState->screen, appState->console, appState->controller_p1);
+    }
+    if (appState->savestateMenu->active) { turbo = false; }
+
     // Holding rewind pauses the game and shows a strip of thumbnails of the last 30 seconds. Left and right move a cursor
     // along it, frame by frame, and the screen shows that frame. Letting go carries on from there
     bool rewind_held = controller_get_pressed(appState->controller_p1, BUTTON_REWIND);
-    if (rewind_held && !appState->rewind->active && !turbo && appState->startup_ready) {
+    if (rewind_held && !appState->rewind->active && !appState->savestateMenu->active && !turbo && appState->startup_ready) {
         rewindBegin(appState->rewind, appState->screen, appState->overlay);
     }
     else if (!rewind_held && appState->rewind->active) {
@@ -230,7 +244,7 @@ void tickMain(struct ApplicationState *appState) {
     }
 
     // Passes the controllers' button states to the controller ports
-    NES_setControllerState(appState->console, 0, controller_get_state_as_byte(appState->controller_p1));
+    NES_setControllerState(appState->console, 0, savestateMenuFilterInput(appState->savestateMenu, controller_get_state_as_byte(appState->controller_p1)));
     NES_setControllerState(appState->console, 1, controller_get_state_as_byte(appState->controller_p2));
 
     // Handle startup cycles
@@ -240,8 +254,8 @@ void tickMain(struct ApplicationState *appState) {
         return;
     }
 
-    // The game is paused while rewinding. Keep drawing the preview and thumbnails, at about the NES's frame rate
-    if (appState->rewind->active) {
+    // The game is paused while rewinding or in the savestate menu. Keep drawing the screen and overlay, at about the NES's frame rate
+    if (appState->rewind->active || appState->savestateMenu->active) {
         presentAll(appState);
         SDL_Delay(16);
         return;
