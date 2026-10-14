@@ -1,6 +1,6 @@
-# NES_Emulator
+# Wizzrobe
 
-This is still very much a work in progress. Current features are:
+This is an emulator of the Nintendo Entertainment system. Current features are:
 
 - Cycle accurate emulation of the 6502 processor
 - PPU
@@ -11,3 +11,10 @@ This is still very much a work in progress. Current features are:
 - Battery save functionality
 - Fast forward, and rewind functionality with visual interface
 - CRT filter (courtesy of Timothy Lottes)
+
+# Screenshots
+
+[Savestate Menu](Screenshots/01.png)
+[Rewind Interface](Screenshots/02.png)
+[Controller Configuration](Screenshots/03.png)
+[Screenshot Taking](Screenshots/04.png)
