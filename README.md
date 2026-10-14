@@ -14,7 +14,7 @@ This is an emulator of the Nintendo Entertainment system. Current features are:
 
 # Screenshots
 
-[Savestate Menu](Screenshots/01.png)
-[Rewind Interface](Screenshots/02.png)
-[Controller Configuration](Screenshots/03.png)
-[Screenshot Taking](Screenshots/04.png)
+![Savestate Menu](Screenshots/01.png)
+![Rewind Interface](Screenshots/02.png)
+![Controller Configuration](Screenshots/03.png)
+![Screenshot Taking](Screenshots/04.png)
